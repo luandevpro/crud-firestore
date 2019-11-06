@@ -14,12 +14,11 @@ export default class Navbar extends Component {
 					</IconButtonWrapper>
 					<TypographyWrapper>Airbnb</TypographyWrapper>
 				</LogoWrapper>
-				{userCurrent ? children[1] : children[0]}
+				{userCurrent.length > 0 ? children[1] : children[0]}
 			</AppBarWrapper>
 		);
 	}
 }
-
 export const AppBarWrapper = styled.div`
 	display: flex;
 	justify-content: space-between;

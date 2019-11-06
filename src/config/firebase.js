@@ -1,6 +1,8 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import "firebase/storage";
+import "firebase/messaging";
 
 const config = {
 	apiKey: "AIzaSyA3YA_n9QOnMeGQz1vFN5e_skPK8Mu1zlQ",
@@ -10,7 +12,9 @@ const config = {
 	storageBucket: "crud-firebase-22ad1.appspot.com",
 	messagingSenderId: "386703051739",
 };
-firebase.initializeApp(config);
+firebase.initializeApp(config, {
+	timestampsInSnapshots: true,
+});
 
 firebase.firestore().settings({
 	timestampsInSnapshots: true,
@@ -22,3 +26,7 @@ export const auth = firebase.auth();
 export const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 
 export const firestore = firebase.firestore();
+
+export const storage = firebase.storage();
+
+export const messaging = firebase.messaging();

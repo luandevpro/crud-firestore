@@ -1,10 +1,11 @@
 import React, { Fragment } from "react";
+import moment from "moment";
 import { IconButton, Avatar, TableCell } from "@material-ui/core";
 import { MdCreate, MdDelete } from "react-icons/md";
 import { firestore } from "../../config/firebase";
 import * as Types from "../../constants/ActionTypes";
 
-export default ({ bird, id, dispatchEdit }) => {
+export default ({ bird, id, dispatchEdit, userCurrent }) => {
 	const handleDelete = id => {
 		firestore
 			.collection("birds")
@@ -38,15 +39,19 @@ export default ({ bird, id, dispatchEdit }) => {
 			<TableCell numeric>{bird.weight}</TableCell>
 			<TableCell numeric>{bird.description}</TableCell>
 			<TableCell numeric>
-				<Avatar alt="Remy Sharp" src={bird.photoURL} />
+				{bird.timestamp && moment(bird.timestamp.toDate()).fromNow()}
 			</TableCell>
 			<TableCell numeric>
-				<IconButton onClick={() => handleUpdate(id)}>
-					<MdCreate />
-				</IconButton>
-				<IconButton onClick={() => handleDelete(id)}>
-					<MdDelete />
-				</IconButton>
+				{userCurrent[0] && userCurrent[0].uid === bird.userId ? (
+					<IconButton onClick={() => handleUpdate(id)}>
+						<MdCreate />
+					</IconButton>
+				) : null}
+				{userCurrent[0] && userCurrent[0].uid === bird.userId ? (
+					<IconButton onClick={() => handleDelete(id)}>
+						<MdDelete />
+					</IconButton>
+				) : null}
 			</TableCell>
 		</Fragment>
 	);

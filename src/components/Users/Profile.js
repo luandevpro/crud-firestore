@@ -4,7 +4,10 @@ import styled from "styled-components";
 export default ({ userCurrent }) => {
 	return (
 		<ProfileWrapper>
-			<Image src={userCurrent.photoURL} alt={userCurrent.displayName} />
+			<Image
+				src={userCurrent[0].photoURL}
+				alt={userCurrent[0].displayName}
+			/>
 		</ProfileWrapper>
 	);
 };

@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import BirdItem from "./BirdItem";
 
-function Bird({ birds, dispatchEdit }) {
+function Bird({ birds, dispatchEdit, userCurrent }) {
 	return (
 		<BirdWrapper>
 			<Paper>
@@ -32,6 +32,7 @@ function Bird({ birds, dispatchEdit }) {
 									bird={bird}
 									id={bird.id}
 									dispatchEdit={dispatchEdit}
+									userCurrent={userCurrent}
 								/>
 							</TableRow>
 						))}

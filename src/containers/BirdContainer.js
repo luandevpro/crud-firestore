@@ -6,6 +6,12 @@ export default class BirdContainer extends Component {
 	static contextType = Context;
 	render() {
 		var value = this.context;
-		return <Bird birds={value.birds} dispatchEdit={value.dispatchEdit} />;
+		return (
+			<Bird
+				birds={value.birds}
+				dispatchEdit={value.dispatchEdit}
+				userCurrent={value.userCurrent}
+			/>
+		);
 	}
 }

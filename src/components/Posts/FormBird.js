@@ -11,8 +11,9 @@ class FormBird extends Component {
 		this.firestoreRef = firestore.collection("birds");
 		this.state = {
 			id: null,
-			name: this.props.editBird.name,
-			weight: this.props.editBird.weight,
+			name: "",
+			weight: "",
+			timestamp: null,
 			description: "",
 		};
 	}
@@ -31,6 +32,11 @@ class FormBird extends Component {
 	handleSubmit = (values, { resetForm }) => {
 		if (this.state.id) {
 			console.log(values);
+			this.firestoreRef.doc(values.id).update({
+				name: values.name,
+				weight: values.weight,
+				description: values.description,
+			});
 			this.props.dispatchEdit({
 				type: Types.EDIT_BIRD_COMPLETE,
 			});
@@ -52,16 +58,16 @@ class FormBird extends Component {
 					name: values.name,
 					weight: values.weight,
 					description: values.description,
-					userId: this.props.userCurrent.uid,
+					userId: this.props.userCurrent[0].uid,
 					timestamp: firebase.firestore.FieldValue.serverTimestamp(),
 				})
-				.then(() => console.log(this.state))
+				.then(data => console.log(data))
 				.catch(error => console.log(error));
 			resetForm({
 				name: "",
 				weight: "",
 				description: "",
-				id: "",
+				id: null,
 			});
 		}
 	};
@@ -70,6 +76,7 @@ class FormBird extends Component {
 		return (
 			<FormBirdWrapper>
 				<Formik
+					enableReinitialize={true}
 					initialValues={{ name, weight, description, id }}
 					onSubmit={this.handleSubmit}
 				>

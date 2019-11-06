@@ -9,6 +9,9 @@ import ProfileContainer from "./containers/ProfileContainer";
 import PostContainer from "./containers/PostContainer";
 import FormBirdContainer from "./containers/FormBirdContainer";
 import BirdContainer from "./containers/BirdContainer";
+import UploadContainer from "./containers/UploadContainer";
+import * as serviceWorker from "./serviceWorker";
+import { messaging } from "./config/firebase";
 
 const GlobalStyle = createGlobalStyle`
    body {
@@ -30,6 +33,7 @@ class App extends Component {
 						<FormBirdContainer />
 						<BirdContainer />
 					</PostContainer>
+					{/* <UploadContainer /> */}
 				</AppContext>
 			</ThemeProvider>
 		);
@@ -37,3 +41,7 @@ class App extends Component {
 }
 
 ReactDOM.render(<App />, document.getElementById("root"));
+serviceWorker.unregister();
+messaging.onMessage(function(payload) {
+	console.log("Message received. ", payload);
+});

@@ -3,7 +3,6 @@ import * as Types from "../constants/ActionTypes";
 const appReducer = (state, action) => {
 	switch (action.type) {
 		case Types.EDIT_BIRD:
-			console.log(action.payload);
 			return {
 				...state,
 				editBird: action.payload,

@@ -9,7 +9,10 @@ const appReducer = (state, action) => {
 				birds: action.payload,
 			};
 		case Types.DELETE_BIRD:
-			var index = findIndex(state.birds, bird => bird.id === action.payload);
+			const index = findIndex(
+				state.birds,
+				bird => bird.id === action.payload
+			);
 			if (index !== -1) {
 				var birds = state.birds.splice(index, 1);
 				return {
@@ -17,6 +20,17 @@ const appReducer = (state, action) => {
 				};
 			}
 			return state;
+		case Types.UPDATE_BIRD_COMPLETE:
+			const indexUpdate = findIndex(
+				state.birds,
+				bird => bird.id === action.payload.id
+			);
+			if (indexUpdate !== -1) {
+				state.birds[indexUpdate] = action.payload;
+			}
+			console.log(indexUpdate);
+			console.log(action.payload);
+			return { ...state };
 		default:
 			return state;
 	}

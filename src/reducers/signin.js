@@ -5,7 +5,7 @@ const appReducer = (state, action) => {
 		case Types.SIGNIN_GOOGLE:
 			return {
 				...state,
-				userCurrent: action.payload,
+				userCurrent: [action.payload],
 			};
 		default:
 			return state;

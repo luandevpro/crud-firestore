@@ -12,12 +12,7 @@ export default class AppContext extends Component {
 		this.state = {
 			userCurrent: [],
 			birds: [],
-			editBird: {
-				id: null,
-				name: "",
-				weight: "",
-				description: "",
-			},
+			editBird: null,
 			loading: false,
 			dispatchSignIn: action =>
 				this.setState(state => signin(state, action)),
@@ -25,7 +20,7 @@ export default class AppContext extends Component {
 			dispatchEdit: action => this.setState(state => edit(state, action)),
 		};
 	}
-	componentDidMount() {
+	async componentDidMount() {
 		var loadBird = [];
 		this.setState({ loading: true });
 		var { dispatchBird } = this.state;
@@ -39,7 +34,9 @@ export default class AppContext extends Component {
 							id: change.doc.id,
 							name: change.doc.data().name,
 							weight: change.doc.data().weight,
+							userId: change.doc.data().userId,
 							description: change.doc.data().description,
+							timestamp: change.doc.data().timestamp,
 						};
 						loadBird.push(newBird);
 						dispatchBird({
@@ -48,6 +45,18 @@ export default class AppContext extends Component {
 						});
 					}
 					if (change.type === "modified") {
+						var newBirdUpdate = {
+							id: change.doc.id,
+							name: change.doc.data().name,
+							weight: change.doc.data().weight,
+							userId: change.doc.data().userId,
+							description: change.doc.data().description,
+							timestamp: change.doc.data().timestamp,
+						};
+						dispatchBird({
+							type: Types.UPDATE_BIRD_COMPLETE,
+							payload: newBirdUpdate,
+						});
 						console.log("Modified city: ", change.doc.data());
 					}
 					if (change.type === "removed") {
@@ -61,9 +70,19 @@ export default class AppContext extends Component {
 			});
 		auth.onAuthStateChanged(user => {
 			if (user) {
+				const users = pick(user, [
+					"displayName",
+					"uid",
+					"photoURL",
+					"email",
+				]);
+				firestore
+					.collection("users")
+					.doc(users.uid)
+					.set(pick(user, ["displayName", "uid", "photoURL", "email"]));
 				this.state.dispatchSignIn({
 					type: Types.SIGNIN_GOOGLE,
-					payload: pick(user, ["displayName", "uid", "photoURL", "email"]),
+					payload: users,
 				});
 			}
 			this.setState({ loading: false });
